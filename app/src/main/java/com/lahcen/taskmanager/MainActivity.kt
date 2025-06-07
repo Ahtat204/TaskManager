@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        main()
         window.apply {
             statusBarColor = Color.BLACK
         }
@@ -37,7 +38,9 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
+fun main(){
+    println("done")
+}
 }
 
 

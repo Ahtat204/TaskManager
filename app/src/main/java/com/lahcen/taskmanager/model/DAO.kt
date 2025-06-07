@@ -19,7 +19,7 @@ interface DAO {
     @Update(Task::class)
     suspend fun updateTask(task: Task)
     @Delete(Task::class)
-    suspend fun deleteTask(task: List<Task>)
+    suspend fun deleteTask(task: Task)
     @Query("SELECT * FROM tasks")
      fun getAllTasks(): Flow<List<Task>>
     // Search with LIKE

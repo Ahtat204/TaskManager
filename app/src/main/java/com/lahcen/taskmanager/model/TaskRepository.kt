@@ -13,7 +13,7 @@ val allTasks : Flow<List<Task>> = taskDAO.getAllTasks()
     suspend fun updatetask(task: Task) {
         taskDAO.updateTask(task)
     }
-    suspend fun deletetask(tasks: List<Task>) {
+    suspend fun deletetask(tasks: Task) {
         taskDAO.deleteTask(tasks)
     }
     fun searchTasks(search: String): Flow<List<Task>> {
@@ -21,9 +21,6 @@ val allTasks : Flow<List<Task>> = taskDAO.getAllTasks()
 suspend fun isDatabaseEmpty(): Boolean {
     return taskDAO.getTaskCount()==0
 }
-
-
-
 }
 
 

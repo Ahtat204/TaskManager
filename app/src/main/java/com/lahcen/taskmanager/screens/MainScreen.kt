@@ -24,9 +24,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Create
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonColors
@@ -45,13 +45,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lahcen.taskmanager.R
@@ -62,13 +63,12 @@ import com.lahcen.taskmanager.ui.theme.opensansbold
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun Mainscreen(taskViewModel: TaskViewModel) {
+    val taskBackground=Color(0xFF20207C)
     val SeeAll = Color(0xFFFFC300)
     var name: String by remember { mutableStateOf("Lahcen") }
     var task: String by remember { mutableStateOf("") }
     var ShowDialog by remember { mutableStateOf(false) }
-    val windowMetrics = LocalContext.current.getSystemService(WindowManager::class.java).currentWindowMetrics
-    val height = windowMetrics.bounds.height().dp
-    val width = windowMetrics.bounds.width().dp
+        LocalContext.current.getSystemService(WindowManager::class.java).currentWindowMetrics
     var descrption: String by remember { mutableStateOf("") }
     var isError by rememberSaveable { mutableStateOf(false) }
     val tasklist by taskViewModel.allTask.observeAsState(emptyList())
@@ -106,8 +106,7 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
 
-                IconButton(modifier = Modifier.padding(10.dp),
-                    onClick = { /*TODO*/ }) {
+                IconButton(modifier = Modifier.padding(10.dp), onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Outlined.Notifications, contentDescription = null, tint = Color.White
                     )
@@ -175,9 +174,11 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
             color = Color.White,
             modifier = Modifier.padding(17.dp, 15.dp)
         )
-        TextButton(onClick = {}, modifier = Modifier.offset(280.dp, 0.dp)) {
+        TextButton(onClick = { if (!ShowDialog) ShowDialog = true else null}, modifier = Modifier
+            .offset(0.dp)
+            .align(Alignment.TopEnd)) {
             Text(
-                "See All",
+                "Add",
                 fontSize = 20.sp,
                 color = SeeAll,
                 fontStyle = FontStyle.Companion.Italic,
@@ -187,26 +188,58 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
                     .offset(x = 10.dp)
             )
         }
-
-
-
-
-
-
         Column(
-            modifier = Modifier
-                .offset()
+            modifier = Modifier.offset()
         ) {
 
-
-
 ///////////////////////////////////////////////////
-            LazyRow(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Top, modifier = Modifier.fillMaxWidth().padding(0.dp,50.dp),) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 57.dp),
+            ) {
                 items(tasklist.size) {
-                    TaskCard(task = tasklist[it])
+                    //TaskItem(task = tasklist[it])
+
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(taskBackground)
+                            .fillMaxWidth()
+                            .padding(70.dp, 70.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = tasklist[it].title, color = Color.White, style = MaterialTheme.typography.titleLarge)
+                        tasklist[it].description?.let {
+                            Text(
+                                text = it, style = MaterialTheme.typography.bodyMedium, color = Color.White
+                            )
+                        }
+                        IconButton(onClick = {taskViewModel.deletetask(tasklist[it])}) {
+                            Image(
+                                contentDescription = null,
+                                imageVector = Icons.Rounded.Delete,
+                                contentScale = ContentScale.Crop,
+                                colorFilter = ColorFilter.tint(Color.White)
+                            )
+                        }
+
+                        IconButton(onClick={},modifier=Modifier) {
+                            Image(
+                                contentDescription = null,
+                                imageVector = Icons.Rounded.Create,
+                                contentScale = ContentScale.Crop,
+                                colorFilter = ColorFilter.tint(Color.White))
+                        }
+                    }
+
                 }
             }
         }
+
 
         AnimatedVisibility(
             visible = ShowDialog,
@@ -244,7 +277,6 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
                     suffix = { Text("details") },
                     enabled = true,
 
-
                     )
                 if (descrption.isEmpty() || task.isEmpty()) {
                     IconButton(
@@ -260,12 +292,12 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
                             modifier = Modifier.fillMaxSize()
                         )
                     }
-
-
                 } else {
                     IconButton(
                         onClick = { insertTask(task, descrption) },
-                        modifier = Modifier.offset(60.dp, 10.dp),
+                        modifier = Modifier
+                            .offset()
+                            .align(Alignment.TopEnd),
                         colors = IconButtonColors(
                             Color.Black, Color.White, Color.Yellow, Color.Green
                         )
@@ -279,53 +311,11 @@ fun Mainscreen(taskViewModel: TaskViewModel) {
                 }
             }
         }
-
     }
-}
-
-@Composable
-fun TaskCard(task: Task) {
-    TaskItem(task)
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AddTaskDialog(modifier: Modifier, onDismiss: () -> Unit) {
-    AlertDialog(onDismissRequest = onDismiss,
-        confirmButton = { "this will add the task to the tasks database" },
-        modifier = modifier.fillMaxSize(),
-        title = { Text(text = "create a task", fontSize = 20.sp) },
-        text = { Text(text = "write the task decription here", fontSize = 20.sp) })
 
 }
 
 
-@Composable
-fun TaskItem(task: Task) {
-    Column(
-        modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(Color.Black)
-            .fillMaxWidth()
-            .padding(70.dp,70.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = task.title, color = Color.White, style = MaterialTheme.typography.titleLarge)
-        task.description?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White
-            )
-        }
-    }
-}
 
-@RequiresApi(Build.VERSION_CODES.R)
-@Preview()
-@Composable
- fun HomescreenPreview() {
-
-}
 
 

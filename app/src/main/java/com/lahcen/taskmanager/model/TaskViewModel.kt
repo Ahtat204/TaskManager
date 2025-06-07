@@ -23,7 +23,7 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
         }
     }
 
-    fun deletetask(task: List<Task>) {
+    fun deletetask(task: Task) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 taskRepository.deletetask(task)
