@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.lahcen.taskmanager.BottomBarScreen
 import com.lahcen.taskmanager.screens.Calendar
+import com.lahcen.taskmanager.screens.CreateTask
 import com.lahcen.taskmanager.screens.DashBoard
 import com.lahcen.taskmanager.screens.Mainscreen
 
@@ -23,6 +24,9 @@ fun BottomNavigationgraph(navController: NavHostController) {
         }
         composable(route = BottomBarScreen.DashBoard.route) {
             DashBoard()
+        }
+        composable(route = BottomBarScreen.CreateTask.route) {
+            CreateTask()
         }
     }
 }
