@@ -17,10 +17,15 @@ data class Task(
     val dueDate: Long? = null,
     val isImportant: Boolean = false,
     val isCompleted: Boolean = false,
-    val priority: Int = 0, // 0: Low, 1: Medium, 2: High
+    val priority: priority? = null, // 0: Low, 1: Medium, 2: High
     val category: String? = null,
     val lastUpdated: Long = System.currentTimeMillis()
     
 )
+enum class priority{
+    LOW,
+    MEDIUM,
+    HIGH
+}
 
 
