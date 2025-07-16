@@ -123,7 +123,7 @@ fun TopScreen(modifier: Modifier = Modifier) {
                 )
                 TextButton(onClick = { /*TODO*/ }) {
                     Text(
-                        text = "see More",
+                        text = "see aLL",
                         color = Color.White,
                         modifier = Modifier,
                         fontFamily = FontFamily(Font(R.font.opensansbold))

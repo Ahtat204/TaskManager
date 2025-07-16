@@ -70,5 +70,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material)
+    implementation(libs.datetime)
 
 }
