@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
@@ -33,6 +37,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -41,6 +50,9 @@ import java.time.format.DateTimeFormatter
 @Preview(showSystemUi = true)
 @Composable
 fun CreateTask()  {
+    var expanded by remember { mutableStateOf(false) }
+    val dateDialogState = rememberMaterialDialogState()
+    val timeDialogState = rememberMaterialDialogState()
     var Date by remember { mutableStateOf(LocalDate.now()) }
     var Time by remember { mutableStateOf(LocalTime.now()) }
     val foramattedDate = remember {
@@ -128,6 +140,68 @@ fun CreateTask()  {
                     cursorColor = Color.Black
                 )
             )
+        }
+
+        Box() {
+            TextButton(
+                onClick = { expanded = !expanded },
+                modifier = Modifier
+                    .padding(20.dp, 0.dp)
+                    .border(1.dp, Color.White, RoundedCornerShape(10.dp))
+            ) {
+                Text(text = "priority", fontSize = 20.sp, color = Color.White)
+            }
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                DropdownMenuItem(onClick = { /*TODO*/ }) {
+                    Text(text = "LOW")
+                }
+                DropdownMenuItem(onClick = {}) {
+                    Text(text = "HIGH")
+                }
+                DropdownMenuItem(onClick = {}) {
+                    Text(text = "MEDIUM")
+                }
+            }
+    }
+        Box(modifier = Modifier.padding(20.dp, 20.dp)) {
+            Row {
+                Button(onClick = { dateDialogState.show() }) {
+                    Text(text = foramattedDate.value, color = Color.White)
+                }
+
+
+                Button(onClick = { timeDialogState.show() }) {
+                    Text(text = foramattedTime.value, color = Color.White)
+                }
+            }
+        }
+        MaterialDialog(dialogState = dateDialogState,
+            properties = DialogProperties(dismissOnClickOutside = true, dismissOnBackPress = true),
+            shape = RoundedCornerShape(20.dp),
+            autoDismiss = true,
+            buttons = {
+                positiveButton(text = "Ok")
+                negativeButton(text = "Cancel")
+            }) {
+            datepicker(initialDate = LocalDate.now(),
+                title = "Task due date",
+                allowedDateValidator = { (it.dayOfYear < LocalDate.now().dayOfYear) }) {
+                Date = it
+            }
+        }
+
+        MaterialDialog(dialogState = timeDialogState,
+            properties = DialogProperties(dismissOnClickOutside = true, dismissOnBackPress = true),
+            shape = RoundedCornerShape(20.dp),
+            autoDismiss = true,
+            buttons = {
+                positiveButton(text = "Ok")
+                negativeButton(text = "Cancel")
+            }) {
+            timepicker(initialTime = LocalTime.now(),
+                title = "Task due date") {
+                Time= it
+            }
         }
     }
 }
