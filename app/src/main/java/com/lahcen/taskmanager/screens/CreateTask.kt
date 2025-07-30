@@ -2,6 +2,7 @@ package com.lahcen.taskmanager.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -32,12 +34,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import com.lahcen.taskmanager.model.TaskViewModel
+import com.lahcen.taskmanager.model.data.Task
+import com.lahcen.taskmanager.model.data.priority
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
@@ -47,14 +52,18 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Preview(showSystemUi = true)
 @Composable
-fun CreateTask()  {
+fun CreateTask(taskViewModel:TaskViewModel)  {
+    var isValid:Boolean by remember { mutableStateOf(false) }
+    //val taskViewModel:TaskViewModel= viewModel()
+    var category: String by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
+    var Priority: priority by remember { mutableStateOf(priority.MEDIUM) }
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
     var Date by remember { mutableStateOf(LocalDate.now()) }
     var Time by remember { mutableStateOf(LocalTime.now()) }
+    var description:String by remember{ mutableStateOf("")}
     val foramattedDate = remember {
         derivedStateOf {
             DateTimeFormatter.ofPattern("yyyy-MM-dd").format(Date)
@@ -66,6 +75,9 @@ fun CreateTask()  {
         }
     }
     var title: String by remember { mutableStateOf("") }
+    fun insertTask(taskname:String,taskdescription:String,taskpriority:priority,Category:String,dueDate:LocalDate,dueTime:LocalTime){
+        taskViewModel.inserttask(Task(title = taskname, description = taskdescription, priority = Priority))
+    }
     Column {
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -86,7 +98,7 @@ fun CreateTask()  {
             }
 
             IconButton(
-                onClick = {},
+                onClick = {insertTask(taskname =title , taskdescription =description , taskpriority = Priority, Category = category, dueDate = Date, dueTime = Time)},
                 modifier = Modifier
                     .offset(50.dp, 3.dp)
                     .border(width = 1.dp, color = Color.Cyan, shape = CircleShape)
@@ -101,9 +113,11 @@ fun CreateTask()  {
                 value = title,
                 onValueChange = { newtitle ->
                     title = newtitle
+                    isValid=newtitle.isNotEmpty()
                 },
+               isError = !isValid,
                 shape = RoundedCornerShape(25.dp),
-                placeholder = { Text(text = "Enter the Task Name or Title") },
+                label = { Text(text = "Enter the Task Name or Title") },
                 modifier = Modifier
                     .border(
                         width = 1.dp, color = Color.Transparent, shape = RoundedCornerShape(20.dp)
@@ -120,12 +134,14 @@ fun CreateTask()  {
         }
         Box(modifier = Modifier.padding(20.dp, 30.dp)) {
             TextField(
-                value = title,
-                onValueChange = { newtitle ->
-                    title = newtitle
+                value = description,
+                onValueChange = { newdesc ->
+                    description= newdesc
+                   isValid= newdesc.isNotEmpty()
                 },
+
                 shape = RoundedCornerShape(25.dp),
-                placeholder = { Text(text = "Enter the Task description") },
+                label = {Text(text = "Enter the Task description")  },
                 modifier = Modifier
                     .border(
                         width = 1.dp, color = Color.Transparent, shape = RoundedCornerShape(20.dp)
@@ -149,17 +165,26 @@ fun CreateTask()  {
                     .padding(20.dp, 0.dp)
                     .border(1.dp, Color.White, RoundedCornerShape(10.dp))
             ) {
-                Text(text = "priority", fontSize = 20.sp, color = Color.White)
+                Text(text = Priority.toString(), fontSize = 20.sp, color = Color.White)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = { /*TODO*/ }) {
-                    Text(text = "LOW")
+                DropdownMenuItem(onClick = {
+                    Priority = priority.MEDIUM
+                    expanded =! expanded
+                }) {
+                    Text(text = "MEDIUM")
                 }
-                DropdownMenuItem(onClick = {}) {
+                DropdownMenuItem(onClick = {
+                    Priority = priority.HIGH
+                    expanded =! expanded
+                }) {
                     Text(text = "HIGH")
                 }
-                DropdownMenuItem(onClick = {}) {
-                    Text(text = "MEDIUM")
+                DropdownMenuItem(onClick = {
+                    Priority = priority.LOW
+                    expanded =!expanded}) {
+
+                    Text(text = "LOW")
                 }
             }
     }
@@ -185,7 +210,7 @@ fun CreateTask()  {
             }) {
             datepicker(initialDate = LocalDate.now(),
                 title = "Task due date",
-                allowedDateValidator = { (it.dayOfYear < LocalDate.now().dayOfYear) }) {
+                allowedDateValidator = { (it.dayOfYear <= LocalDate.now().dayOfYear) }) {
                 Date = it
             }
         }
@@ -202,6 +227,29 @@ fun CreateTask()  {
                 title = "Task due date") {
                 Time= it
             }
+        }
+        Box(
+            modifier = Modifier
+                .wrapContentWidth()
+                .background(Color.Transparent)
+                .offset(0.dp, 0.dp)
+                .align(Alignment.End)
+                .offset((-5).dp, (-80).dp)
+                .clip(
+                    RoundedCornerShape(25.dp)
+                )
+        ) {
+            TextField(value = category,
+                onValueChange = { category = it },
+                placeholder = { Text("Category") },
+                shape = RoundedCornerShape(25.dp),
+                modifier = Modifier
+                    .border(
+                        width = 1.dp, color = Color.Transparent
+                    )
+                    .background(Color.White)
+                    .fillMaxWidth(0.25f)
+            )
         }
     }
 }

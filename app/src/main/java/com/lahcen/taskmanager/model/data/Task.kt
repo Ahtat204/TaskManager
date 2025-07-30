@@ -3,8 +3,7 @@ package com.lahcen.taskmanager.model.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-
+import java.time.LocalDate
 
 @Entity(tableName = "tasks")
 data class Task(
@@ -19,7 +18,7 @@ data class Task(
     val dueDate: Long? = null,
     val isImportant: Boolean = false,
     val isCompleted: Boolean = false,
-    val priority: priority? = null, // 0: Low, 1: Medium, 2: High
+    val priority: priority?=null, // 0: Low, 1: Medium, 2: High
     val category: String? = null,
     val lastUpdated: Long = System.currentTimeMillis()
     

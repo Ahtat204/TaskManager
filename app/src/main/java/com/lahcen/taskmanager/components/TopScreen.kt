@@ -116,14 +116,14 @@ fun TopScreen(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Your Progress",
+                    text = "Your Tasks",
                     color = Color.White,
                     fontFamily = opensansExtraBold,
                     modifier = Modifier.padding(horizontal = 20.dp)
                 )
                 TextButton(onClick = { /*TODO*/ }) {
                     Text(
-                        text = "see aLL",
+                        text = "see all",
                         color = Color.White,
                         modifier = Modifier,
                         fontFamily = FontFamily(Font(R.font.opensansbold))

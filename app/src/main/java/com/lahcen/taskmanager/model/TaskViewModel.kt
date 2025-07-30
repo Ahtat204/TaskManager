@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(private val taskRepository: TaskRepository):ViewModel() {
-    val allTask: LiveData<List<Task>> = taskRepository.allTasks.asLiveData()
+    val allTask : LiveData<List<Task>> = taskRepository.allTasks.asLiveData()
 
     fun inserttask(task: Task) {
         viewModelScope.launch {
@@ -27,6 +27,13 @@ class TaskViewModel @Inject constructor(private val taskRepository: TaskReposito
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 taskRepository.deletetask(task)
+            }
+        }
+    }
+    fun updateTask(task: Task){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                taskRepository.updatetask(task)
             }
         }
     }
