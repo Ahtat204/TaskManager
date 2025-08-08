@@ -12,14 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.sharp.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -34,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -84,7 +79,6 @@ fun TopScreen(modifier: Modifier = Modifier) {
                     Icon(
                         Icons.Outlined.Notifications, contentDescription = null, tint = Color.White
                     )
-
                 }
             }
             Row(
