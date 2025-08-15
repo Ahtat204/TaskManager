@@ -7,21 +7,20 @@ import java.time.LocalDate
 
 @Entity(tableName = "tasks")
 data class Task(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     @ColumnInfo(name = "title")
-    val title: String,
+    var title: String,
     @ColumnInfo(name = "description")
-    val description: String? = null,
+    var description: String? = null,
     @ColumnInfo(name = "created_date")
-    val createdDate: Long = System.currentTimeMillis(),
-    val dueDate: Long? = null,
-    val isImportant: Boolean = false,
-    val isCompleted: Boolean = false,
-    val priority: priority?=null, // 0: Low, 1: Medium, 2: High
-    val category: String? = null,
-    val lastUpdated: Long = System.currentTimeMillis()
-    
+    var createdDate: Long = System.currentTimeMillis(),
+    var dueDate: Long? = null,
+    var isImportant: Boolean = false,
+    var isCompleted: Boolean = false,
+    var priority: priority?=null, // 0: Low, 1: Medium, 2: High
+    var category: String? = null,
+    val lastUpdated: Long = System.currentTimeMillis(),
+    @PrimaryKey(autoGenerate = true)
+    val id: Int? = null
 )
 enum class priority{
     LOW,

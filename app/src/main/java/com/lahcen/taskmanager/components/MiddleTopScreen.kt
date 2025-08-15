@@ -1,7 +1,6 @@
 package com.lahcen.taskmanager.components
 import android.os.Build
 import android.util.Log
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -58,7 +57,7 @@ import kotlin.math.abs
 @Composable
 fun MiddleTopScreen(modifier: Modifier = Modifier,taskViewModel: TaskViewModel) {
     val PopUpScreen:Boolean by remember{ mutableStateOf(false) }
-    val taskList by taskViewModel.allTask.observeAsState(listOf(Task(1,"task2")))
+    val taskList by taskViewModel.allTask.observeAsState(listOf(Task("","task2")))
 
     Column(
             modifier = Modifier
@@ -90,7 +89,9 @@ fun MiddleTopScreen(modifier: Modifier = Modifier,taskViewModel: TaskViewModel) 
                                 Log.d("task list", PopUpScreen.toString())
                             }
                     ) {
-                       Button(onClick = {}, modifier = Modifier.offset(0.dp, 0.dp).fillMaxSize()) {
+                       Button(onClick = {}, modifier = Modifier
+                           .offset(0.dp, 0.dp)
+                           .fillMaxSize()) {
 
 
                        }
