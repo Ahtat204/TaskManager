@@ -12,11 +12,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.lahcen.taskmanager.BottomBarScreen
 
+/**
+ * Composable that displays the bottom navigation bar.
+ *
+ * @param navController Controller used to navigate between bottom bar screens.
+ *
+ * This bottom bar currently includes the Home, Calendar, and Dashboard screens.
+ * Highlights the current selected screen based on the navigation state.
+ */
 @Composable
-fun Bottombar(navController: NavHostController) {
+fun BottomBar(navController: NavHostController) {
     val items = listOf(
         BottomBarScreen.Home, BottomBarScreen.Calendar, BottomBarScreen.DashBoard
     )
+
+    // Observe the current back stack entry to highlight the selected item
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -31,18 +41,33 @@ fun Bottombar(navController: NavHostController) {
     }
 }
 
+/**
+ * Composable that adds a single item to the bottom navigation bar.
+ *
+ * @param screen The [BottomBarScreen] that this item represents.
+ * @param currentDestination The current [NavDestination], used to determine selection state.
+ * @param navController Controller used to navigate to the screen when clicked.
+ *
+ * Displays an icon and label for the item. Highlights the item if it is the
+ * current destination in the navigation hierarchy.
+ */
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen, currentDestination: NavDestination?, navController: NavHostController
+    screen: BottomBarScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
 ) {
-    NavigationBarItem(selected = currentDestination?.hierarchy?.any {
-        it.route == screen.route
-    } == true,
+    NavigationBarItem(
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
         onClick = { navController.navigate(route = screen.route) },
         label = { Text(text = screen.title) },
         icon = {
             Icon(
-                imageVector = screen.icon, contentDescription = null
+                imageVector = screen.icon,
+                contentDescription = "${screen.title} icon"
             )
-        })
+        }
+    )
 }

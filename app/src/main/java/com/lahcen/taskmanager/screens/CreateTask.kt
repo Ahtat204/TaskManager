@@ -40,6 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.compose.rememberNavController
+import com.lahcen.taskmanager.BottomBarScreen
 import com.lahcen.taskmanager.model.TaskViewModel
 import com.lahcen.taskmanager.model.data.Task
 import com.lahcen.taskmanager.model.data.priority
@@ -54,6 +56,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateTask(taskViewModel:TaskViewModel)  {
+    val navController = rememberNavController()
     var isValid:Boolean by remember { mutableStateOf(false) }
     //val taskViewModel:TaskViewModel= viewModel()
     var category: String by remember { mutableStateOf("") }
@@ -76,7 +79,7 @@ fun CreateTask(taskViewModel:TaskViewModel)  {
     }
     var title: String by remember { mutableStateOf("") }
     fun insertTask(taskname:String,taskdescription:String,taskpriority:priority,Category:String,dueDate:LocalDate,dueTime:LocalTime){
-        taskViewModel.inserttask(Task(title = taskname, description = taskdescription, priority = Priority))
+        taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = Priority))
     }
     Column {
         Row(
@@ -98,7 +101,10 @@ fun CreateTask(taskViewModel:TaskViewModel)  {
             }
 
             IconButton(
-                onClick = {insertTask(taskname =title , taskdescription =description , taskpriority = Priority, Category = category, dueDate = Date, dueTime = Time)},
+                onClick = {
+                    insertTask(taskname =title , taskdescription =description , taskpriority = Priority, Category = category, dueDate = Date, dueTime = Time)
+
+                          },
                 modifier = Modifier
                     .offset(50.dp, 3.dp)
                     .border(width = 1.dp, color = Color.Cyan, shape = CircleShape)

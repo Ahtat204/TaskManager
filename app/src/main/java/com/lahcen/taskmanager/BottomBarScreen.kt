@@ -7,12 +7,30 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 
+/**
+ * Represents a screen in the bottom navigation bar of the app.
+ *
+ * Each object defines a route for navigation, a display title,
+ * and an [ImageVector] icon for UI representation.
+ *
+ * @property route The navigation route associated with this screen.
+ * @property title The title displayed in the bottom bar.
+ * @property icon The icon displayed in the bottom bar.
+ */
 sealed class BottomBarScreen(
-    val route: String, val title: String, val icon: ImageVector
+    val route: String,
+    val title: String,
+    val icon: ImageVector
 ) {
+    /** Home screen, represented by a home icon. */
     object Home : BottomBarScreen("home", "Home", Icons.Default.Home)
-     object Calendar : BottomBarScreen("calendar", "Calendar", Icons.Default.DateRange)
-         object DashBoard: BottomBarScreen("dashboard", "Dashboard", Icons.Rounded.Star)
+
+    /** Calendar screen, represented by a date-range icon. */
+    object Calendar : BottomBarScreen("calendar", "Calendar", Icons.Default.DateRange)
+
+    /** Dashboard screen, represented by a star icon. */
+    object DashBoard : BottomBarScreen("dashboard", "Dashboard", Icons.Rounded.Star)
+
+    /** Screen for creating a task, represented by a plus/add icon. */
     object CreateTask : BottomBarScreen("create", "Create", Icons.Rounded.Add)
 }
-

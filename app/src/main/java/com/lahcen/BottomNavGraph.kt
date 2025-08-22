@@ -40,6 +40,14 @@ import com.lahcen.taskmanager.screens.CreateTask
 import com.lahcen.taskmanager.screens.DashBoard
 import com.lahcen.taskmanager.screens.Mainscreen
 
+/**
+ * Composable that sets up the navigation graph for the bottom navigation bar.
+ *
+ * Defines routes and corresponding composable screens for each bottom bar item.
+ *
+ * @param navController Controller for navigation actions between composables.
+ * @param taskViewModel [TaskViewModel] used to manage task data in screens.
+ */
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun BottomNavigationgraph(navController: NavHostController, taskViewModel: TaskViewModel) {
@@ -60,7 +68,12 @@ fun BottomNavigationgraph(navController: NavHostController, taskViewModel: TaskV
 }
 
 /**
- * this just for testing
+ * Preview composable for a task card UI.
+ *
+ * Displays a card with task title, description, priority, and action icons for editing
+ * or deleting the task. Currently uses placeholder values for demonstration purposes.
+ *
+ * Note: This is primarily for testing and UI design previews.
  */
 @Preview
 @Composable
@@ -90,7 +103,7 @@ fun TaskCard() {
                 .offset(49.dp, (-60).dp)
         ) {
             Image(
-                contentDescription = null,
+                contentDescription = "Edit Task",
                 imageVector = Icons.Rounded.Create,
                 contentScale = ContentScale.Crop,
                 colorFilter = ColorFilter.tint(Color.White)
@@ -100,7 +113,7 @@ fun TaskCard() {
             onClick = {}, modifier = Modifier.offset((-50).dp, (-60).dp)
         ) {
             Image(
-                contentDescription = null,
+                contentDescription = "Delete Task",
                 imageVector = Icons.Rounded.Delete,
                 contentScale = ContentScale.Crop,
                 colorFilter = ColorFilter.tint(Color.White)
@@ -110,17 +123,24 @@ fun TaskCard() {
             "task.description.toString()",
             fontSize = 10.sp,
             color = Color.White,
-            modifier = Modifier.align(Alignment.BottomCenter).width(100.dp),maxLines=1, overflow = TextOverflow.Ellipsis
-            )
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .width(100.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
 
         Text(
             "task.priority.toString()",
             fontSize = 10.sp,
             color = Color.White,
-            modifier = Modifier.offset(50.dp,20.dp).align(Alignment.BottomEnd),maxLines=1, overflow = TextOverflow.Ellipsis, softWrap = true, letterSpacing = TextUnit(1f,
-                TextUnitType(11)
-            )
+            modifier = Modifier
+                .offset(50.dp, 20.dp)
+                .align(Alignment.BottomEnd),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            softWrap = true,
+            letterSpacing = TextUnit(1f, TextUnitType.Sp)
         )
     }
 }
-

@@ -8,10 +8,7 @@ import org.junit.Before
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.MockedConstruction.Context
-import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
 @RunWith(MockitoJUnitRunner::class)
@@ -37,21 +34,21 @@ class TaskRepositoryTest {
     }
 
     @Test
-    fun inserttask() = runBlocking {
+    fun insertTask() = runBlocking {
         val task = Task("title", "desc", 1)
-        repository.inserttask(task)
+        repository.insertTask(task)
         verify(dao).insertTask(task)
 
     }
 
     @Test
-    fun updatetask() {
+    fun updateTask() {
     }
 
     @Test
-    fun deletetask()= runBlocking {
+    fun deleteTask()= runBlocking {
         val task = Task("title", "desc", 1)
-        repository.deletetask(task)
+        repository.deleteTask(task)
         verify(dao).deleteTask(task)
     }
 
