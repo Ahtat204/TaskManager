@@ -62,7 +62,7 @@ fun BottomNavigationgraph(navController: NavHostController, taskViewModel: TaskV
             DashBoard()
         }
         composable(route = BottomBarScreen.CreateTask.route) {
-            CreateTask(taskViewModel)
+            CreateTask(taskViewModel,navController)
         }
     }
 }

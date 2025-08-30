@@ -13,14 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.lahcen.taskmanager.model.TaskViewModel
 import com.lahcen.taskmanager.model.data.Task
 import kotlin.math.abs
-
 /**
  * Composable that displays a horizontally scrollable list of task cards
  * at the top-middle portion of the screen.
@@ -44,7 +42,8 @@ fun MiddleTopScreen(
     modifier: Modifier = Modifier,
     taskViewModel: TaskViewModel
 ) {
-    var popUpScreen: Boolean by remember { mutableStateOf(false) }
+    val isOpen=remember { mutableStateOf(false) }
+    val OpenModifyTask:(Boolean)->Unit={isOpen.value=it}
     val taskList by taskViewModel.allTask.observeAsState(listOf(Task("", "task2")))
 
     Column(
@@ -62,10 +61,8 @@ fun MiddleTopScreen(
             items(abs(taskList.size)) { item ->
                 TaskCard(
                     task = taskList[item],
-                    modify = { taskViewModel.updateTask(taskList[item]) },
-                    delete = { taskViewModel.deleteTask(taskList[item]) },
-                    isVisible = popUpScreen,
-                    onVisibilityChange = { popUpScreen = it }
+                    modify = { OpenModifyTask(!isOpen.value) },
+                    delete = { taskViewModel.deleteTask(taskList[item]) }
                 )
             }
         }

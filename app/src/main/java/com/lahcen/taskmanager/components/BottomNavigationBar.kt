@@ -29,7 +29,6 @@ fun BottomBar(navController: NavHostController) {
     // Observe the current back stack entry to highlight the selected item
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
     BottomNavigation(backgroundColor = Color.Black) {
         items.forEach { screen ->
             AddItem(

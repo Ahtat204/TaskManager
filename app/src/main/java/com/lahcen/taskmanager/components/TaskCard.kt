@@ -17,6 +17,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,9 +41,6 @@ import com.lahcen.taskmanager.model.data.Task
  * @param task The [Task] object to display in the card.
  * @param modify Callback invoked when the user clicks the edit icon to modify the task.
  * @param delete Callback invoked when the user clicks the delete icon to remove the task.
- * @param isVisible Controls whether the task details popup (via [ShowTaskDetails]) is visible.
- * @param onVisibilityChange Callback invoked when the card is clicked to toggle [isVisible].
- *
  * Behavior:
  * - Displays task title, description, priority, and category.
  * - Provides clickable icons for modifying and deleting the task.
@@ -56,13 +57,12 @@ import com.lahcen.taskmanager.model.data.Task
 fun TaskCard(
     task: Task,
     modify: () -> Unit,
-    delete: () -> Unit,
-    isVisible: Boolean,
-    onVisibilityChange: (Boolean) -> Unit = {}
+    delete: () -> Unit
 ) {
     val taskBackground = Color(0xFF156CD0)
-
-    Card(modifier = Modifier.clickable(onClick = { onVisibilityChange(!isVisible) })) {
+    var popUpScreen: Boolean by remember { mutableStateOf(false) }
+    val onVisibilityChange: (Boolean) -> Unit = {popUpScreen=it}
+    Card(modifier = Modifier.clickable(onClick = { onVisibilityChange(!popUpScreen) })) {
         Box(contentAlignment = Alignment.TopStart,
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp))
@@ -156,6 +156,7 @@ fun TaskCard(
         }
     }
 // Show detailed task popup if isVisible is true
-    ShowTaskDetails(isOpen = isVisible, task = task)
+  // ShowTaskDetails(isOpen = popUpScreen, task = task,Modifier.offset((-300).dp, (50).dp))
+    TaskDetails(isOpen = popUpScreen,onDismissRequest = {onVisibilityChange(!popUpScreen)},task = task)
 
 }
