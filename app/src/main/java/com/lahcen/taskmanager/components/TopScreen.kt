@@ -2,57 +2,63 @@ package com.lahcen.taskmanager.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lahcen.taskmanager.R
 import com.lahcen.taskmanager.ui.theme.opensansExtraBold
 import com.lahcen.taskmanager.ui.theme.opensansbold
 
-@Preview(showBackground = true, showSystemUi = true)
+/**
+ * A composable that displays the top portion of the screen with a user greeting, search field,
+ * notifications/settings icons, and a section header for tasks.
+ *
+ * This composable includes:
+ * 1. **Profile Image** – displays a user profile picture.
+ * 2. **Welcome Text** – greeting the user by name.
+ * 3. **Notifications Icon** – a placeholder for notification actions.
+ * 4. **Search Field** – an [OutlinedTextField] to search for tasks.
+ * 5. **Settings Icon** – a placeholder for settings actions.
+ * 6. **Tasks Section Header** – shows "Your Tasks" and a "see all" button.
+ *
+ * @param Title A [MutableState] containing the current text of the search input.
+ * @param modifier Optional [Modifier] for customizing the layout externally.
+ *
+ * Usage example:
+ * ```
+ * val searchQuery = remember { mutableStateOf("") }
+ * TopScreen(Title = searchQuery)
+ * ```
+ */
 @Composable
-fun TopScreen(modifier: Modifier = Modifier) {
-    var name: String by remember { mutableStateOf("Lahcen") }
+fun TopScreen(Title: MutableState<String>, modifier: Modifier = Modifier) {
+    // User name (can be replaced by dynamic user data)
+    val name: String by remember { mutableStateOf("Lahcen") }
+
+    // Example internal state for tasks (currently unused)
     var task: String by remember { mutableStateOf("") }
+
     Box(
-        Modifier
+        modifier
             .clip(RoundedCornerShape(30.dp))
             .background(Color.Black)
             .fillMaxHeight(0.3f)
             .wrapContentHeight(Alignment.Top)
     ) {
-        Column() {
+        Column {
+            // Top Row: Profile image, Welcome text, Notifications icon
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -62,11 +68,12 @@ fun TopScreen(modifier: Modifier = Modifier) {
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.profile),
-                    contentDescription = null,
+                    contentDescription = "User Profile",
                     modifier = Modifier
                         .offset(x = 40.dp)
-                        .align(Alignment.CenterVertically),
+                        .align(Alignment.CenterVertically)
                 )
+
                 Text(
                     text = "Welcome \n $name",
                     fontFamily = opensansbold,
@@ -75,35 +82,50 @@ fun TopScreen(modifier: Modifier = Modifier) {
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
 
-                IconButton(modifier = Modifier.padding(10.dp), onClick = { /*TODO*/ }) {
+                IconButton(
+                    modifier = Modifier.padding(10.dp),
+                    onClick = { /* TODO: handle notifications click */ }
+                ) {
                     Icon(
-                        Icons.Outlined.Notifications, contentDescription = null, tint = Color.White
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Notifications",
+                        tint = Color.White
                     )
                 }
             }
+
+            // Middle Row: Search field and Settings icon
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                OutlinedTextField(value = "",
+                OutlinedTextField(
+                    value = Title.value,
+                    onValueChange = { Title.value = it },
                     modifier = Modifier.padding(horizontal = 20.dp),
                     shape = RoundedCornerShape(20.dp),
-                    onValueChange = { task = it },
-                    placeholder = { Text("Search for a task", color = Color.White) })
+                    placeholder = { Text("Search for a task", color = Color.White) }
+                )
+
                 IconButton(
-                    onClick = {}, modifier = Modifier.offset(x = (-10).dp)
+                    onClick = { /* TODO: handle settings click */ },
+                    modifier = Modifier.offset(x = (-10).dp)
                 ) {
                     Icon(
-                        Icons.Rounded.Settings, contentDescription = null, tint = Color.White
+                        imageVector = Icons.Rounded.Settings,
+                        contentDescription = "Settings",
+                        tint = Color.White
                     )
                 }
             }
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp)
+
+            Spacer(Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
             )
+
+            // Bottom Row: "Your Tasks" header and "see all" button
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
@@ -115,11 +137,13 @@ fun TopScreen(modifier: Modifier = Modifier) {
                     fontFamily = opensansExtraBold,
                     modifier = Modifier.padding(horizontal = 20.dp)
                 )
-                TextButton(onClick = { /*TODO*/ }) {
+
+                TextButton(
+                    onClick = { /* TODO: handle see all click */ }
+                ) {
                     Text(
                         text = "see all",
                         color = Color.White,
-                        modifier = Modifier,
                         fontFamily = FontFamily(Font(R.font.opensansbold))
                     )
                 }

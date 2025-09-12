@@ -47,34 +47,46 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Composable function for creating a new task.
+ *
+ * This function displays a form for users to input task details such as title, description,
+ * priority, due date, due time, and category. It uses a [TaskViewModel] to handle the
+ * insertion of the new task into the underlying data source and a [NavHostController]
+ * to navigate away from the screen after the task is successfully created.
+ *
+ * The UI is built using Jetpack Compose components.
+ *
+ * @param taskViewModel The ViewModel responsible for handling task-related operations.
+ * @param navController The navigation controller used to navigate to other screens.
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
     val isValid= remember { mutableStateOf(false) }
-
     //val taskViewModel:TaskViewModel= viewModel()
     val category= remember { mutableStateOf("") }
-    var expanded = remember { mutableStateOf(false) }
-    val Priority = remember { mutableStateOf(priority.MEDIUM) }
+    val expanded = remember { mutableStateOf(false) }
+    val taskPriority = remember { mutableStateOf(priority.MEDIUM) }
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
-    var Date by remember { mutableStateOf(LocalDate.now()) }
-    var Time by remember { mutableStateOf(LocalTime.now()) }
+    var dueDate by remember { mutableStateOf(LocalDate.now()) }
+    var taskTime by remember { mutableStateOf(LocalTime.now()) }
     val description=remember{ mutableStateOf("")}
-    val foramattedDate = remember {
+    val formattedDate = remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(Date)
+            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(dueDate)
         }
     }
-    val foramattedTime = remember {
+    val formattedTime = remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("hh:mm").format(Time)
+            DateTimeFormatter.ofPattern("hh:mm").format(taskTime)
         }
     }
     val title = remember { mutableStateOf("") }
     fun insertTask(taskname:String,taskdescription:String,taskpriority:priority,Category:String,dueDate:LocalDate,dueTime:LocalTime){
         if(!isValid.value) return;
-      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = Priority.value))
+      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = taskPriority.value))
         navController.navigate(route = BottomBarScreen.Home.route)
     }
     Column {
@@ -98,7 +110,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
 // Save Task Button
             IconButton(
                 onClick = {
-                    insertTask(taskname =title.value , taskdescription =description.value , taskpriority = Priority.value, Category = category.value, dueDate = Date, dueTime = Time)
+                    insertTask(taskname =title.value , taskdescription =description.value , taskpriority = taskPriority.value, Category = category.value, dueDate = dueDate, dueTime = taskTime)
 
                           },
                 modifier = Modifier
@@ -112,16 +124,16 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
         }
         TitleField(Title=title,isValid=isValid)
         DescriptionField(Description = description,isValid=isValid)
-        PriorityDialog(Priority=Priority,expanded=expanded)
+        PriorityDialog(Priority=taskPriority,expanded=expanded)
         Box(modifier = Modifier.padding(20.dp, 20.dp)) {
             Row {
                 Button(onClick = { dateDialogState.show() }) {
-                    Text(text = foramattedDate.value, color = Color.White)
+                    Text(text = formattedDate.value, color = Color.White)
                 }
 
 
                 Button(onClick = { timeDialogState.show() }) {
-                    Text(text = foramattedTime.value, color = Color.White)
+                    Text(text = formattedTime.value, color = Color.White)
                 }
             }
         }
@@ -136,7 +148,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
             datepicker(initialDate = LocalDate.now(),
                 title = "Task due date",
                 allowedDateValidator = { (it.dayOfYear <= LocalDate.now().dayOfYear) }) {
-                Date = it
+                dueDate = it
             }
         }
 
@@ -150,7 +162,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
             }) {
             timepicker(initialTime = LocalTime.now(),
                 title = "Task due date") {
-                Time= it
+                taskTime= it
             }
         }
         CategoryField(category)

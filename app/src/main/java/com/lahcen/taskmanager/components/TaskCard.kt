@@ -46,7 +46,6 @@ import com.lahcen.taskmanager.model.data.Task
  * - Provides clickable icons for modifying and deleting the task.
  * - Highlights the task title and lays out task information in a styled [Box].
  * - On card click, toggles the visibility of the detailed task popup.
- * - Calls [ShowTaskDetails] to show a detailed animated view of the task.
  *
  * Layout:
  * - Uses [Card] and [Box] with rounded corners and a background color.
@@ -61,8 +60,8 @@ fun TaskCard(
 ) {
     val taskBackground = Color(0xFF156CD0)
     var popUpScreen: Boolean by remember { mutableStateOf(false) }
-    val onVisibilityChange: (Boolean) -> Unit = {popUpScreen=it}
-    Card(modifier = Modifier.clickable(onClick = { onVisibilityChange(!popUpScreen) })) {
+    val onVisibilityChange: (Boolean) -> Unit = {popUpScreen=!it}
+    Card(modifier = Modifier.clickable(onClick = { popUpScreen=true})) {
         Box(contentAlignment = Alignment.TopStart,
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp))
@@ -157,6 +156,6 @@ fun TaskCard(
     }
 // Show detailed task popup if isVisible is true
   // ShowTaskDetails(isOpen = popUpScreen, task = task,Modifier.offset((-300).dp, (50).dp))
-    TaskDetails(isOpen = popUpScreen,onDismissRequest = {onVisibilityChange(!popUpScreen)},task = task)
+    TaskDetails(isOpen = popUpScreen,onDismissRequest = {popUpScreen=false},task = task)
 
 }

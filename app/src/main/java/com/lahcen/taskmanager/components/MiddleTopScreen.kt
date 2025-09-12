@@ -29,6 +29,7 @@ import kotlin.math.abs
  *
  * @param modifier Optional [Modifier] for customizing layout or appearance.
  * @param taskViewModel The [TaskViewModel] used to fetch, update, and delete tasks.
+ *@param tasks The list of tasks to be displayed.
  *
  * Behavior:
  * - Uses a [LazyRow] to display tasks horizontally.
@@ -40,29 +41,29 @@ import kotlin.math.abs
 @Composable
 fun MiddleTopScreen(
     modifier: Modifier = Modifier,
-    taskViewModel: TaskViewModel
+    taskViewModel: TaskViewModel,
+    tasks: List<Task>
 ) {
     val isOpen=remember { mutableStateOf(false) }
     val OpenModifyTask:(Boolean)->Unit={isOpen.value=it}
-    val taskList by taskViewModel.allTask.observeAsState(listOf(Task("", "task2")))
-
+    //val taskList by taskViewModel.allTask.observeAsState(listOf(Task("", "task2")))
     Column(
         modifier = Modifier
-            .offset(20.dp, 45.dp)
+            .offset(0.dp, 45.dp)
             .padding(0.dp, 60.dp)
     ) {
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 97.dp),
+                .padding(1.dp, 90.dp),
         ) {
-            items(abs(taskList.size)) { item ->
+            items(tasks.size) { item ->
                 TaskCard(
-                    task = taskList[item],
+                    task = tasks[item],
                     modify = { OpenModifyTask(!isOpen.value) },
-                    delete = { taskViewModel.deleteTask(taskList[item]) }
+                    delete = { taskViewModel.deleteTask(tasks[item]) }
                 )
             }
         }

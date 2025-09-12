@@ -1,6 +1,7 @@
 package com.lahcen.taskmanager.components
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -21,9 +23,21 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.lahcen.taskmanager.model.data.Task
 
+/**
+ *  Composable function for showing a task details dialog.it uses the [Dialog] composable
+ * @param isOpen Boolean indicating whether the dialog should be open.
+ * @param onDismissRequest Callback to be invoked when the dialog is dismissed.
+ * @param task The task to display details for.
+ * Behavior:
+ * When User click on a Task in the List of Tasks , this function is called to show the details of the task.
+ * and with clicking the [Button],or Anywhere outside the Dialog, it Closes the dialog is closed.
+ *
+ */
 @Composable
-fun TaskDetails(isOpen:Boolean,onDismissRequest: () -> Unit,task: Task){
-    Dialog(onDismissRequest = { onDismissRequest() }) {
+fun TaskDetails(isOpen: Boolean, onDismissRequest: () -> Unit, task: Task) {
+    if (!isOpen) return
+
+    Dialog(onDismissRequest = onDismissRequest) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -31,43 +45,38 @@ fun TaskDetails(isOpen:Boolean,onDismissRequest: () -> Unit,task: Task){
                 .padding(16.dp),
             shape = RoundedCornerShape(16.dp),
         ) {
-            Text(
-                text = task.title,
-                modifier = Modifier.border(width = 1.dp, color = Color.White),
-                fontSize = 20.sp,
-                color = Color.Black
-            )
-            Spacer(Modifier.height(40.dp))
-            Text(
-                textAlign = TextAlign.Center,
-                text = task.description.toString(),
-                fontSize = 10.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .offset(0.dp, 0.dp)
-                    .border(width = 1.dp, color = Color.White)
-            )
-            Spacer(Modifier.height(40.dp))
-            Row {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = task.category.toString(),
-                    modifier = Modifier
-                        .border(width = 1.dp, color = Color.White)
-                        .offset(0.dp, 0.dp),
-                    fontSize = 29.sp,
-                    color = Color.White
+                    text = task.title, fontSize = 20.sp, color = Color.Black
                 )
-                Spacer(Modifier.width(20.dp))
+                Spacer(Modifier.height(20.dp))
                 Text(
-                    text = task.dueDate.toString(),
-                    modifier = Modifier
-                        .border(width = 1.dp, color = Color.White)
-                        .offset(0.dp, 0.dp),
-                    fontSize = 29.sp,
-                    color = Color.Black
+                    text = task.description ?: "",
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp,
+                    color = Color.Gray
                 )
-                Button(onClick = onDismissRequest) {
-                    Text(text = "Close")
+                Spacer(Modifier.height(20.dp))
+                Row {
+                    Text(
+                        text = task.category ?: "", fontSize = 16.sp, color = Color.DarkGray
+                    )
+                    Spacer(Modifier.width(20.dp))
+                    Text(
+                        text = task.dueDate?.toString() ?: "", fontSize = 16.sp, color = Color.Black
+                    )
+                    Spacer(Modifier.height(40.dp))
+                    Button(
+                        onClick = onDismissRequest,
+                        modifier = Modifier.offset(0.dp, 100.dp),
+                        shape = RoundedCornerShape(15.dp)
+                    ) {
+                        Text(text = "Close")
+                    }
                 }
             }
         }

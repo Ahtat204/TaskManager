@@ -70,4 +70,12 @@ class TaskViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Search tasks in the database that match the given query.
+     * @param search The title of the task.
+     */
+    fun searchTasks(search: String): LiveData<List<Task>> {
+        return taskRepository.searchTasks(search).asLiveData()
+    }
 }

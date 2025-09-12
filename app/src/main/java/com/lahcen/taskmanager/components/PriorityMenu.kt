@@ -16,6 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lahcen.taskmanager.model.data.priority
 
+/**
+ * Composable function for displaying a priority selection dialog.it uses [DropdownMenu] with [DropdownMenuItem] to show a list of priority options.
+ * @param Priority MutableState representing the selected priority.
+ * @param expanded MutableState indicating whether the dropdown menu is expanded.
+ */
+
 @Composable
 fun PriorityDialog(Priority: MutableState<priority>, expanded: MutableState<Boolean>) {
     Box(Modifier.padding(20.dp, 0.dp)) {

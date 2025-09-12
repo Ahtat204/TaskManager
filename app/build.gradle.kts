@@ -25,7 +25,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner = "com.lahcen.taskmanager.CustomTestRunner"
     }
@@ -51,7 +50,6 @@ android {
 }
 
 dependencies {
-    val mockitoKotlinVersion = "5.4.0"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -72,17 +70,13 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material)
     implementation(libs.datetime)
-
-
-
+    //unit tests
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockito.core)
     testImplementation(libs.hilt.android.testing)
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
-
-
-
+    testImplementation (libs.mockito.kotlin)
+    //android tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 /**
  * A composable input field used for entering or editing the **category** of a task.
@@ -44,7 +42,7 @@ fun CategoryField(category: MutableState<String>,modifier: Modifier=Modifier) {
             .wrapContentWidth()
             .background(Color.Transparent)
             .offset(0.dp, 0.dp)
-            .offset((100).dp, (0).dp)
+            .offset((70).dp, (0).dp)
             .clip(
                 RoundedCornerShape(25.dp)
             )
@@ -58,9 +56,10 @@ fun CategoryField(category: MutableState<String>,modifier: Modifier=Modifier) {
             modifier = Modifier
                 .border(
                     width = 1.dp, color = Color.Transparent
-                ).clip(RoundedCornerShape(25.dp))
+                )
+                .clip(RoundedCornerShape(25.dp))
                 .background(Color.White)
-                .fillMaxWidth(0.45f)
+                .fillMaxWidth(0.35f)
         )
     }
 }
