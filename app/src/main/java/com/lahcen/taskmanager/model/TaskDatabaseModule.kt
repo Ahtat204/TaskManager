@@ -18,7 +18,7 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-class TaskDatabaseModule {
+internal class TaskDatabaseModule {
 
     /**
      * Singleton instance of [TaskDataBase].

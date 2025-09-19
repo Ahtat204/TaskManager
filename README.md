@@ -8,7 +8,7 @@
     - Calls Repository methods to perform database operations.
     - Ensures operations run on background threads with `viewModelScope`.
 
-3. **Repository** (`TaskRepository`)
+3. **Repository** (`TaskService`)
     - Abstracts data access.
     - Provides CRUD operations and search functionality.
     - Communicates with DAO.

@@ -15,21 +15,21 @@ import javax.inject.Inject
  * ViewModel for managing UI-related data in a lifecycle-conscious way.
  *
  * Provides a clean API for the UI layer to interact with the task data.
- * Uses [TaskRepository] to handle data operations and ensures all database
+ * Uses [TaskService] to handle data operations and ensures all database
  * interactions run on a background thread via [Dispatchers.IO].
  *
- * @property taskRepository Repository used for performing CRUD operations on [Task].
+ * @property taskService Service used for performing CRUD operations on [Task].
  */
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskService: TaskService
 ) : ViewModel() {
 
     /**
      * A [LiveData] stream of all tasks from the database.
      * Automatically updated when the underlying data changes.
      */
-    val allTask: LiveData<List<Task>> = taskRepository.allTasks.asLiveData()
+    val allTask: LiveData<List<Task>> = taskService.allTasks.asLiveData()
 
     /**
      * Insert a task into the database.
@@ -40,7 +40,7 @@ class TaskViewModel @Inject constructor(
     fun insertTask(task: Task) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                taskRepository.insertTask(task)
+                taskService.insertTask(task)
             }
         }
     }
@@ -53,20 +53,19 @@ class TaskViewModel @Inject constructor(
     fun deleteTask(task: Task) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                taskRepository.deleteTask(task)
+                taskService.deleteTask(task)
             }
         }
     }
 
     /**
      * Update an existing task in the database.
-     *
      * @param task The [Task] to update.
      */
     fun updateTask(task: Task) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                taskRepository.updateTask(task)
+                taskService.updateTask(task)
             }
         }
     }
@@ -76,6 +75,6 @@ class TaskViewModel @Inject constructor(
      * @param search The title of the task.
      */
     fun searchTasks(search: String): LiveData<List<Task>> {
-        return taskRepository.searchTasks(search).asLiveData()
+        return taskService.searchTasks(search).asLiveData()
     }
 }

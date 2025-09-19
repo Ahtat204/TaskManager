@@ -20,10 +20,25 @@ import com.lahcen.BottomNavigationgraph
 import com.lahcen.taskmanager.model.TaskViewModel
 import com.lahcen.taskmanager.ui.theme.TaskManagerTheme
 import dagger.hilt.android.AndroidEntryPoint
-
+/**
+ * Main entry point of the Task Manager application.
+ *
+ * This activity initializes the app's UI using Jetpack Compose,
+ * sets up navigation with a [NavController], and provides a
+ * [TaskViewModel] instance for managing task-related state.
+ *
+ * Responsibilities:
+ * - Applies the [TaskManagerTheme].
+ * - Hosts the app's [Scaffold] with:
+ *   - A bottom navigation bar ([BottomBar]).
+ *   - A floating action button (FAB) for navigating to the
+ *     task creation screen.
+ * - Delegates navigation logic to [BottomNavigationgraph].
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val myViewModel: TaskViewModel by viewModels()
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
