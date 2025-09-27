@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lahcen.taskmanager.model.data.Task
+import kotlin.math.abs
 
 /**
  * Composable that displays a card representing a single [Task].
@@ -60,7 +61,7 @@ fun TaskCard(
 ) {
     val taskBackground = Color(0xFF156CD0)
     var popUpScreen: Boolean by remember { mutableStateOf(false) }
-    val onVisibilityChange: (Boolean) -> Unit = {popUpScreen=!it}
+    var opened:Boolean by remember { mutableStateOf(false) }
     Card(modifier = Modifier.clickable(onClick = { popUpScreen=true})) {
         Box(contentAlignment = Alignment.TopStart,
             modifier = Modifier
@@ -79,7 +80,7 @@ fun TaskCard(
                     .offset(0.dp, (-30).dp)
             )
             IconButton(
-                onClick = modify,
+                onClick = { opened =! opened },
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .offset(49.dp, (-60).dp)
@@ -152,10 +153,25 @@ fun TaskCard(
                     1f, TextUnitType(11)
                 )
             )
+            Text(
+                text =task.taskDate.toString(),
+                fontSize = 10.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .offset((0).dp, 60.dp)
+                    .align(Alignment.Center),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                softWrap = true,
+                letterSpacing = TextUnit(
+                    1f, TextUnitType(11)
+                )
+            )
         }
     }
 // Show detailed task popup if isVisible is true
   // ShowTaskDetails(isOpen = popUpScreen, task = task,Modifier.offset((-300).dp, (50).dp))
     TaskDetails(isOpen = popUpScreen,onDismissRequest = {popUpScreen=false},task = task)
+    ModifyTask(task=task, notOpened = opened, onDismissRequest = {opened=false}, modify = modify)
 
 }

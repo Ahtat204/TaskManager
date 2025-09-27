@@ -62,7 +62,7 @@ fun MiddleTopScreen(
             items(tasks.size) { item ->
                 TaskCard(
                     task = tasks[item],
-                    modify = { OpenModifyTask(!isOpen.value) },
+                    modify = { taskViewModel.updateTask(tasks[item]) },
                     delete = { taskViewModel.deleteTask(tasks[item]) }
                 )
             }

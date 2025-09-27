@@ -30,6 +30,7 @@ data class Task(
     var description: String? = null,
     @ColumnInfo(name = "created_date")
     var createdDate: Long = System.currentTimeMillis(),
+    var taskDate:String?=null,
     var dueDate: Long? = null,
     var isImportant: Boolean = false,
     var isCompleted: Boolean = false,

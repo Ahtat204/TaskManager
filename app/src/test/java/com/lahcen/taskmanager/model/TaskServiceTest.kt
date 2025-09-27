@@ -1,11 +1,11 @@
 package com.lahcen.taskmanager.model
 
 import com.lahcen.taskmanager.model.data.Task
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -60,7 +60,6 @@ class TaskServiceTest {
         val task = listOf(Task("hi", "there", 444))
         val flowlist = flowOf(task) // Flow<List<Task>>
         Mockito.`when`(dao.searchTasks(task[0].title)).thenReturn(flowlist)
-
         val result = taskService.searchTasks(task[0].title).toList() // List<List<Task>>
         assertEquals(task[0], result[0][0])
     }

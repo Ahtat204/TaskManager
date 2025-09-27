@@ -23,7 +23,7 @@ import com.lahcen.taskmanager.model.data.priority
  */
 
 @Composable
-fun PriorityDialog(Priority: MutableState<priority>, expanded: MutableState<Boolean>) {
+fun PriorityDialog(Priority: MutableState<priority?>, expanded: MutableState<Boolean>) {
     Box(Modifier.padding(20.dp, 0.dp)) {
         TextButton(
             onClick = { expanded.value =! expanded.value },

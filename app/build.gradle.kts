@@ -1,4 +1,4 @@
-import com.android.build.api.dsl.Packaging
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    //libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -70,6 +71,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material)
     implementation(libs.datetime)
+     implementation (libs.composecalendar)
+    implementation (libs.kotlinx.datetime)
     //unit tests
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)

@@ -38,10 +38,10 @@ internal class TaskDatabaseModule {
     fun getDatabase(@ApplicationContext context: Context): TaskDataBase {
         return taskDatabaseInstance ?: synchronized(this) {
             val instance = Room.databaseBuilder(
-                context.applicationContext,
-                TaskDataBase::class.java,
-                "task_db"
-            ).build()
+                            context.applicationContext,
+                            TaskDataBase::class.java,
+                            "task_db"
+                        ).fallbackToDestructiveMigration(true).build()
             taskDatabaseInstance = instance
             instance
         }

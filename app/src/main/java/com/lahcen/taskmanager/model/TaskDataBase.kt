@@ -1,5 +1,6 @@
 package com.lahcen.taskmanager.model
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.lahcen.taskmanager.model.data.Task
@@ -15,9 +16,8 @@ import com.lahcen.taskmanager.model.data.Task
  * @property version Version number of the database. Increment this when making schema changes.
  * @property exportSchema Whether to export the database schema into a folder. Set to true for version tracking.
  */
-@Database(entities = [Task::class], version = 1, exportSchema = true)
+@Database(entities = [Task::class], version = 2, exportSchema = true)
 abstract class TaskDataBase : RoomDatabase() {
-
     /**
      * Provides the Data Access Object (DAO) for [Task].
      *
@@ -27,4 +27,11 @@ abstract class TaskDataBase : RoomDatabase() {
      * @return An instance of [DAO].
      */
     abstract fun taskDao(): DAO
+
 }
+
+
+
+
+
+

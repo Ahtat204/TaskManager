@@ -65,9 +65,9 @@ import java.time.format.DateTimeFormatter
 fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
     val isValid= remember { mutableStateOf(false) }
     //val taskViewModel:TaskViewModel= viewModel()
-    val category= remember { mutableStateOf("") }
+    val category= remember { mutableStateOf<String?>("") }
     val expanded = remember { mutableStateOf(false) }
-    val taskPriority = remember { mutableStateOf(priority.MEDIUM) }
+    val taskPriority= remember { mutableStateOf<priority?>(priority.MEDIUM) }
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
     var dueDate by remember { mutableStateOf(LocalDate.now()) }
@@ -86,7 +86,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
     val title = remember { mutableStateOf("") }
     fun insertTask(taskname:String,taskdescription:String,taskpriority:priority,Category:String,dueDate:LocalDate,dueTime:LocalTime){
         if(!isValid.value) return;
-      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = taskPriority.value))
+      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = taskPriority.value, taskDate=formattedDate.value, dueDate = dueDate.toEpochDay(), category = category.value))
         navController.navigate(route = BottomBarScreen.Home.route)
     }
     Column {
@@ -110,7 +110,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
 // Save Task Button
             IconButton(
                 onClick = {
-                    insertTask(taskname =title.value , taskdescription =description.value , taskpriority = taskPriority.value, Category = category.value, dueDate = dueDate, dueTime = taskTime)
+                    taskPriority.value?.let { category.value?.let { it1 -> insertTask(taskname =title.value , taskdescription =description.value , taskpriority = it, Category = it1, dueDate = dueDate, dueTime = taskTime) } }
 
                           },
                 modifier = Modifier

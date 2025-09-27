@@ -67,7 +67,7 @@ fun TaskDetails(isOpen: Boolean, onDismissRequest: () -> Unit, task: Task) {
                     )
                     Spacer(Modifier.width(20.dp))
                     Text(
-                        text = task.dueDate?.toString() ?: "", fontSize = 16.sp, color = Color.Black
+                        text = task.taskDate ?: "", fontSize = 16.sp, color = Color.Black
                     )
                     Spacer(Modifier.height(40.dp))
                     Button(

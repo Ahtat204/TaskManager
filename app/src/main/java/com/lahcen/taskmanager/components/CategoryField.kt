@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
  * The state is automatically updated as the user types.
  */
 @Composable
-fun CategoryField(category: MutableState<String>,modifier: Modifier=Modifier) {
+fun CategoryField(category: MutableState<String?>,modifier: Modifier=Modifier) {
   //  Text(text = "Specify the Category of your task", fontSize = 20.sp, color = Color.White)
     Box(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun CategoryField(category: MutableState<String>,modifier: Modifier=Modifier) {
     ) {
 
         TextField(
-            value = category.value,
+            value = category.value.toString(),
             onValueChange = { category.value = it },
             placeholder = { Text("Category") },
             shape = RoundedCornerShape(25.dp),
