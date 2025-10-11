@@ -20,6 +20,10 @@ import kotlinx.datetime.LocalDate
 
 @Composable
 fun DashBoard(taskViewModel: TaskViewModel,tasks:List<Task>) {
+    val completed =tasks.filter{it.isCompleted}
+    val today=tasks.filter{it.taskDate==LocalDate.now().toString()}
+    val important=tasks.filter{it.priority==priority.HIGH}
+
     Column {
         Text(text = "Important Task", fontSize = 30.sp)
         LazyRow(
@@ -29,12 +33,10 @@ fun DashBoard(taskViewModel: TaskViewModel,tasks:List<Task>) {
                 .fillMaxWidth()
                 .padding(1.dp, 90.dp),
         ) {
-            items(tasks.apply {
-                this.filter { it.priority == priority.HIGH }
-            }.size) { item ->
-                TaskCard(task = tasks[item],
-                    modify = { taskViewModel.updateTask(tasks[item]) },
-                    delete = { taskViewModel.deleteTask(tasks[item]) })
+            items(important.size) { item ->
+                TaskCard(task = important[item],
+                    modify = { taskViewModel.updateTask(important[item]) },
+                    delete = { taskViewModel.deleteTask(important[item]) })
             }
         }
 
@@ -46,12 +48,10 @@ fun DashBoard(taskViewModel: TaskViewModel,tasks:List<Task>) {
                 .fillMaxWidth()
                 .padding(1.dp, 90.dp),
         ) {
-            items(tasks.apply {
-                this.filter { it.taskDate == LocalDate.now().toString() }
-            }.size) { item ->
-                TaskCard(task = tasks[item],
-                    modify = { taskViewModel.updateTask(tasks[item]) },
-                    delete = { taskViewModel.deleteTask(tasks[item]) })
+            items(today.size) { item ->
+                TaskCard(task = today[item],
+                    modify = { taskViewModel.updateTask(today[item]) },
+                    delete = { taskViewModel.deleteTask(today[item]) })
             }
         }
         Text(text = "Completed tasks", fontSize = 30.sp)
@@ -62,12 +62,10 @@ fun DashBoard(taskViewModel: TaskViewModel,tasks:List<Task>) {
                 .fillMaxWidth()
                 .padding(1.dp, 90.dp),
         ) {
-            items(tasks.apply {
-                this.filter { it.isCompleted }
-            }.size) { item ->
-                TaskCard(task = tasks[item],
-                    modify = { taskViewModel.updateTask(tasks[item]) },
-                    delete = { taskViewModel.deleteTask(tasks[item]) })
+            items(completed.size) { item ->
+                TaskCard(task = completed[item],
+                    modify = { taskViewModel.updateTask(completed[item]) },
+                    delete = { taskViewModel.deleteTask(completed[item]) })
             }
         }
     }
