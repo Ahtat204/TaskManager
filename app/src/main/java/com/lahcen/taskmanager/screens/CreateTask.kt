@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -84,9 +85,17 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
         }
     }
     val title = remember { mutableStateOf("") }
-    fun insertTask(taskname:String,taskdescription:String,taskpriority:priority,Category:String,dueDate:LocalDate,dueTime:LocalTime){
+    val isImportant= remember { mutableStateOf(false) }
+    fun insertTask(
+        taskname: String,
+        taskdescription: String,
+        taskpriority: priority,
+        Category: String,
+        dueDate: LocalDate,
+        dueTime: LocalTime
+    ){
         if(!isValid.value) return;
-      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = taskPriority.value, taskDate=formattedDate.value, dueDate = dueDate.toEpochDay(), category = category.value))
+      taskViewModel.insertTask(Task(title = taskname, description = taskdescription, priority = taskPriority.value, taskDate=formattedDate.value, dueDate = dueDate.toEpochDay(), category = category.value, isImportant =  isImportant.value))
         navController.navigate(route = BottomBarScreen.Home.route)
     }
     Column {
@@ -124,6 +133,7 @@ fun CreateTask(taskViewModel:TaskViewModel,navController: NavHostController)  {
         }
         TitleField(Title=title,isValid=isValid)
         DescriptionField(Description = description,isValid=isValid)
+        Checkbox(isImportant.value,onCheckedChange = {isImportant.value=it})
         PriorityDialog(Priority=taskPriority,expanded=expanded)
         Box(modifier = Modifier.padding(20.dp, 20.dp)) {
             Row {

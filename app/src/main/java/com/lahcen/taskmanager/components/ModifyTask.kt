@@ -23,6 +23,19 @@ import androidx.compose.ui.window.Dialog
 import com.lahcen.taskmanager.model.data.Task
 
 
+/**
+ * A composable function that displays a dialog for modifying an existing task.
+ *
+ * This dialog allows users to edit the title, description, category, and priority of a task.
+ *
+ * @param notOpened A boolean flag indicating whether the dialog should be initially closed.
+ *                  If `true`, the dialog will not be shown. If `false`, the dialog will be displayed.
+ * @param onDismissRequest A lambda function that will be invoked when the user requests to dismiss the dialog
+ *                         (e.g., by clicking outside the dialog or pressing the back button).
+ * @param task The [Task] object containing the initial data to be displayed and modified in the dialog.
+ * @param modify A lambda function that will be invoked when the user confirms the modifications to the task.
+ *               This is typically triggered by a "save" or "check" button within the dialog.
+ */
 @Composable
 fun ModifyTask(notOpened: Boolean, onDismissRequest: () -> Unit, task: Task, modify: () -> Unit) {
     val title = remember { mutableStateOf(task.title) }
@@ -51,6 +64,5 @@ fun ModifyTask(notOpened: Boolean, onDismissRequest: () -> Unit, task: Task, mod
             }
         }
     }
-
 }
 

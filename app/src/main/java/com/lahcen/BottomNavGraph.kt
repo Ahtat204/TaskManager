@@ -45,7 +45,7 @@ import com.lahcen.taskmanager.screens.Mainscreen
  *
  * Defines routes and corresponding composable screens for each bottom bar item.
  *
- * @param navController Controller for navigation actions between composables.
+ * @param navController Controller for navigation actions between composable.
  * @param taskViewModel [TaskViewModel] used to manage task data in screens.
  */
 @RequiresApi(Build.VERSION_CODES.R)
@@ -59,7 +59,7 @@ fun BottomNavigationgraph(navController: NavHostController, taskViewModel: TaskV
             Calendar()
         }
         composable(route = BottomBarScreen.DashBoard.route) {
-            DashBoard()
+            DashBoard(taskViewModel=taskViewModel, tasks = taskViewModel.allTask.value?.toList() ?: listOf())
         }
         composable(route = BottomBarScreen.CreateTask.route) {
             CreateTask(taskViewModel,navController)

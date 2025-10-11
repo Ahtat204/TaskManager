@@ -1,6 +1,4 @@
 package com.lahcen.taskmanager.model
-
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.lahcen.taskmanager.model.data.Task

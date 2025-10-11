@@ -29,7 +29,7 @@ class TaskViewModel @Inject constructor(
      * A [LiveData] stream of all tasks from the database.
      * Automatically updated when the underlying data changes.
      */
-    val allTask: LiveData<List<Task>> = taskService.allTasks.asLiveData()
+    val allTask : LiveData<List<Task>> = taskService.allTasks.asLiveData()
 
     /**
      * Insert a task into the database.

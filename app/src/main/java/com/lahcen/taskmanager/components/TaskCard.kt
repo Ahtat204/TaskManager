@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Create
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -167,6 +168,7 @@ fun TaskCard(
                     1f, TextUnitType(11)
                 )
             )
+            Checkbox(task.isCompleted, onCheckedChange = {task.isCompleted=!task.isCompleted})
         }
     }
 // Show detailed task popup if isVisible is true
