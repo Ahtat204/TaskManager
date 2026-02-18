@@ -1,4 +1,4 @@
-![Status](https://img.shields.io/badge/status-in_development-blue?style=for-the-badge)
+
 
 ### Data Flow:
 1. **UI Layer** (Compose screens: Home, Calendar, Dashboard, CreateTask)
